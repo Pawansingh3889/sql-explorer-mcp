@@ -1,0 +1,81 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "sql-explorer-mcp"
+version = "0.1.0"
+description = "Read-only Model Context Protocol server for SQL databases. Lets LLMs (Claude, Cursor, ChatGPT, Continue) introspect and query SQL Server, Postgres, and SQLite with multi-layer safety guards including sql-sop linting."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "Pawan Singh Kapkoti" }]
+keywords = [
+    "mcp",
+    "model-context-protocol",
+    "sql",
+    "sql-server",
+    "mssql",
+    "postgres",
+    "sqlite",
+    "llm",
+    "claude",
+    "cursor",
+    "read-only",
+    "database-explorer",
+    "sql-linter",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Database",
+    "Topic :: Software Development :: Quality Assurance",
+]
+dependencies = [
+    "fastmcp>=2.0",
+    "pydantic>=2.0",
+    "sqlalchemy>=2.0",
+    "pyodbc>=5.1",                # SQL Server driver
+    "psycopg[binary]>=3.1",       # Postgres driver
+    "sqlglot>=23.0",              # SQL parser for SELECT-only validation
+    "sql-sop>=0.7.0",             # peer linter for layer-3 safety
+    "python-dotenv>=1.0",
+    "pyyaml>=6.0",                # multi-server config
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "pytest-asyncio>=0.23",
+    "ruff>=0.4",
+]
+
+[project.scripts]
+sql-explorer-mcp = "sql_explorer_mcp.server:main"
+
+[project.urls]
+Homepage = "https://github.com/Pawansingh3889/sql-explorer-mcp"
+Repository = "https://github.com/Pawansingh3889/sql-explorer-mcp"
+Issues = "https://github.com/Pawansingh3889/sql-explorer-mcp/issues"
+"sql-sop on PyPI" = "https://pypi.org/project/sql-sop/"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/sql_explorer_mcp"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/sql_explorer_mcp", "README.md", "LICENSE", "tests"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100

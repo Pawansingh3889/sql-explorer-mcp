@@ -1,0 +1,30 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+*.egg-info/
+.coverage
+htmlcov/
+
+# Local config — passwords live in env vars but never commit the resolved file
+servers.yaml
+servers.yml
+.env
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# SQLite test artifacts
+*.sqlite
+*.sqlite3
+*.db

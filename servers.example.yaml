@@ -1,0 +1,45 @@
+# Copy to servers.yaml (gitignored) and edit. The file is read from
+# $SQL_EXPLORER_CONFIG, ./servers.yaml, or ~/.sql-explorer-mcp/servers.yaml
+# (in that order).
+#
+# Passwords are read from environment variables (password_env), never
+# stored in this file directly.
+
+default_server: lab
+
+servers:
+
+  # Local SQL Server lab in Docker
+  lab:
+    dialect: mssql
+    host: localhost
+    port: 1433
+    database: BusinessLab
+    auth: sql
+    username: sa
+    password_env: SQL_EXPLORER_LAB_PASSWORD   # export SQL_EXPLORER_LAB_PASSWORD=...
+    max_rows: 1000
+
+  # Production SQL Server (Windows authentication)
+  production:
+    dialect: mssql
+    host: BUSINESS-SQL
+    port: 1433
+    database: SI
+    auth: windows
+    max_rows: 500
+    query_timeout_seconds: 60
+
+  # Postgres analytics warehouse
+  warehouse:
+    dialect: postgres
+    host: db.internal
+    port: 5432
+    database: warehouse
+    username: readonly
+    password_env: WAREHOUSE_PG_PASSWORD
+
+  # SQLite file
+  notes:
+    dialect: sqlite
+    path: ~/notes.sqlite

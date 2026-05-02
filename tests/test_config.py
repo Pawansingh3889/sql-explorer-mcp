@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-import os
 from pathlib import Path
 
 import pytest
 
-from sql_explorer_mcp.config import Config, ConfigError, load_config
+from sql_explorer_mcp.config import ConfigError, load_config
 
 
 def write(tmp_path: Path, name: str, content: str) -> Path:

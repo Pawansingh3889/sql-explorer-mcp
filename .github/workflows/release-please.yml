@@ -1,0 +1,33 @@
+name: release-please
+
+# Watches commits on main. When commits use Conventional Commit format
+# (feat:, fix:, etc.), release-please opens or updates a "release PR"
+# that bumps the version in pyproject.toml and updates CHANGELOG.md.
+#
+# When you merge the release PR, release-please tags v*.*.* on main.
+# That tag fires release.yml, which builds + publishes to PyPI via
+# Trusted Publishing and creates a GitHub Release.
+#
+# End-to-end flow:
+#   1. PR with `feat: add new tool` merges to main
+#   2. release-please opens "chore(main): release X.Y.Z" PR
+#   3. You review and merge that PR
+#   4. release-please creates tag vX.Y.Z
+#   5. release.yml fires on the tag, publishes to PyPI
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v4
+        with:
+          release-type: python
+          package-name: sql-explorer-mcp

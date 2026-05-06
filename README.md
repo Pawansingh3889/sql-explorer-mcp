@@ -2,6 +2,8 @@
 
 [![PyPI](https://img.shields.io/pypi/v/sql-explorer-mcp)](https://pypi.org/project/sql-explorer-mcp/)
 [![Python](https://img.shields.io/pypi/pyversions/sql-explorer-mcp)](https://pypi.org/project/sql-explorer-mcp/)
+[![CI](https://github.com/Pawansingh3889/sql-explorer-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Pawansingh3889/sql-explorer-mcp/actions/workflows/ci.yml)
+[![pre-commit.ci](https://results.pre-commit.ci/badge/github/Pawansingh3889/sql-explorer-mcp/main.svg)](https://results.pre-commit.ci/latest/github/Pawansingh3889/sql-explorer-mcp/main)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
 Read-only Model Context Protocol server for SQL databases. Lets LLMs (Claude, Cursor, ChatGPT, Continue) introspect and query **SQL Server, Postgres, and SQLite** with three layers of safety:

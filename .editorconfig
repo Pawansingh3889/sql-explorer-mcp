@@ -1,0 +1,25 @@
+# EditorConfig keeps line endings, indentation, and trailing whitespace
+# consistent across editors and operating systems. Pinned to LF and
+# UTF-8 so contributors on Windows, macOS, Linux, or WSL see the same
+# bytes after a commit.
+
+root = true
+
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+
+[*.{md,markdown}]
+# Trailing two spaces are a hard line break in Markdown. Keep them.
+trim_trailing_whitespace = false
+
+[*.{yml,yaml,toml,json}]
+indent_size = 2
+
+[Makefile]
+# Make requires literal tabs in recipes.
+indent_style = tab

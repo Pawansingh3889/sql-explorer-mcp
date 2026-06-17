@@ -6,6 +6,8 @@
 [![pre-commit.ci](https://results.pre-commit.ci/badge/github/Pawansingh3889/sql-explorer-mcp/main.svg)](https://results.pre-commit.ci/latest/github/Pawansingh3889/sql-explorer-mcp/main)
 [![License](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
 
+> Part of the [Governed Agent Stack](https://github.com/Pawansingh3889/governed-agent-stack): free, on-prem building blocks for an AI agent you can point at a real database and audit.
+
 Read-only Model Context Protocol server for SQL databases. Lets LLMs (Claude, Cursor, ChatGPT, Continue) introspect and query **SQL Server, Postgres, and SQLite** with three layers of safety:
 
 1. **Connection-level read-only**: `pyodbc readonly=True`, Postgres `SET TRANSACTION READ ONLY`

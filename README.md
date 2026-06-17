@@ -31,17 +31,17 @@ All tools accept an optional `server` to target a specific entry from `servers.y
 
 ## Audit trail (optional)
 
-Every `run_query` can be recorded to a tamper-evident, append-only log, so you can prove later exactly what an agent ran, whether it was blocked, and how it went — written by the server, not the model.
+You can log every `run_query` to an append-only file, so later you can see what an agent actually ran and how it turned out. The server writes the record, not the model.
 
-It's off by default. Turn it on with [agent-blackbox](https://github.com/Pawansingh3889/agent-blackbox):
+Off by default. Switch it on with [agent-blackbox](https://github.com/Pawansingh3889/agent-blackbox):
 
 ```bash
 pip install "sql-explorer-mcp[audit]"
-export SQL_EXPLORER_AUDIT_DB=/path/to/audit.db   # enable: each run_query is logged
+export SQL_EXPLORER_AUDIT_DB=/path/to/audit.db   # log each run_query here
 export SQL_EXPLORER_AUDIT_HASH=1                  # optional: store a hash of the SQL, not the text
 ```
 
-Each entry holds the SQL, the server, the outcome (`ok` / `blocked` / `error`), row count and timing. If the variable isn't set or agent-blackbox isn't installed it's a no-op and never affects a query. Review the log with `agent-blackbox verify` / `stats` / `export`.
+Each row keeps the SQL, the server, the outcome (`ok`, `blocked` or `error`), row count and timing. If the variable isn't set, or agent-blackbox isn't installed, it does nothing. Read it back with `agent-blackbox verify`, `stats` or `export`.
 
 ## Install
 

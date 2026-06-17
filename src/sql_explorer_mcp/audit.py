@@ -1,16 +1,15 @@
 """Optional audit trail for run_query, backed by agent-blackbox.
 
 Off by default. Set ``SQL_EXPLORER_AUDIT_DB`` to a file path and every run_query
-call is recorded to a tamper-evident agent-blackbox ledger: the SQL, which
-server, the outcome (ok / blocked / error), row count and timing. Set
-``SQL_EXPLORER_AUDIT_HASH=1`` to store a SHA-256 of the SQL instead of the clear
-text, for sensitive workloads.
+is recorded to an append-only agent-blackbox ledger: the SQL, the server, the
+outcome (ok / blocked / error), row count and timing. Set
+``SQL_EXPLORER_AUDIT_HASH=1`` to store a hash of the SQL instead of the text.
 
-The record is written by the server, not the model, so a clever prompt can't
-talk the log out of existence. If agent-blackbox isn't installed, or the env var
-isn't set, every call here is a no-op — auditing must never break a query.
+The server writes the record, not the model. If agent-blackbox isn't installed
+or the variable isn't set, every call here does nothing; auditing should not
+break a query.
 
-Install the optional dependency with: pip install "sql-explorer-mcp[audit]"
+Install with: pip install "sql-explorer-mcp[audit]"
 """
 from __future__ import annotations
 

@@ -8,9 +8,9 @@
 
 Read-only Model Context Protocol server for SQL databases. Lets LLMs (Claude, Cursor, ChatGPT, Continue) introspect and query **SQL Server, Postgres, and SQLite** with three layers of safety:
 
-1. **Connection-level read-only** — `pyodbc readonly=True`, Postgres `SET TRANSACTION READ ONLY`
-2. **AST validation** — sqlglot parses every query and rejects anything that isn't a `SELECT` (catches DML smuggled in CTEs)
-3. **Linter pass** — [sql-sop](https://pypi.org/project/sql-sop/) checks every query and rejects error-severity findings; warnings are surfaced to the LLM as advisory output
+1. **Connection-level read-only**: `pyodbc readonly=True`, Postgres `SET TRANSACTION READ ONLY`
+2. **AST validation**: sqlglot parses every query and rejects anything that isn't a `SELECT` (catches DML smuggled in CTEs)
+3. **Linter pass**: [sql-sop](https://pypi.org/project/sql-sop/) checks every query and rejects error-severity findings; warnings are surfaced to the LLM as advisory output
 
 Multi-server: configure several databases in one `servers.yaml`, the LLM picks which one to target per call.
 
@@ -23,7 +23,7 @@ Multi-server: configure several databases in one `servers.yaml`, the LLM picks w
 | `list_tables(server?, database?, schema?)` | List tables, optionally filtered by schema |
 | `describe_table(table, server?, schema?)` | Columns, types, nullability, defaults |
 | `get_table_sample(table, n=10, server?, schema?)` | Quick `SELECT TOP n / LIMIT n` |
-| `run_query(sql, server?)` | Execute arbitrary SELECT — three-layer safety stack |
+| `run_query(sql, server?)` | Execute arbitrary SELECT, three-layer safety stack |
 | `explain_query(sql, server?)` | Return execution plan (engine-specific) |
 | `search_objects(query, server?)` | Find tables and columns by name fragment |
 

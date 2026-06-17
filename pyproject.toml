@@ -57,6 +57,9 @@ dev = [
     "pytest-asyncio>=0.23",
     "ruff>=0.4",
 ]
+audit = [
+    "agent-blackbox>=0.1",       # tamper-evident audit log for run_query (set SQL_EXPLORER_AUDIT_DB)
+]
 
 [project.scripts]
 sql-explorer-mcp = "sql_explorer_mcp.server:main"

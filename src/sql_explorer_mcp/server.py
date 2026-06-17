@@ -16,6 +16,8 @@ server from servers.yaml; default_server is used when omitted.
 
 from __future__ import annotations
 
+import time
+
 from dotenv import load_dotenv
 from fastmcp import FastMCP
 from pydantic import Field
@@ -32,6 +34,7 @@ from sql_explorer_mcp.introspection import (
     search_objects_sql,
 )
 from sql_explorer_mcp.safety import validate_query
+from sql_explorer_mcp.audit import record_query
 
 load_dotenv()
 
@@ -144,13 +147,20 @@ def run_query(
     s = cfg.get_server(server)
     safety = validate_query(sql, dialect=s.dialect)
     if not safety.passed:
+        record_query(sql, s.name, outcome="blocked", meta={"layer": safety.layer, "reason": safety.reason})
         return {
             "passed": False,
             "layer": safety.layer,
             "reason": safety.reason,
             "warnings": safety.sqlsop_findings,
         }
-    rows = execute_select(s, sql)
+    start = time.perf_counter()
+    try:
+        rows = execute_select(s, sql)
+    except Exception as exc:
+        record_query(sql, s.name, outcome="error", meta={"error": str(exc)[:200], "ms": round((time.perf_counter() - start) * 1000)})
+        raise
+    record_query(sql, s.name, outcome="ok", meta={"rows": len(rows), "ms": round((time.perf_counter() - start) * 1000)})
     return {
         "passed": True,
         "rows": rows,

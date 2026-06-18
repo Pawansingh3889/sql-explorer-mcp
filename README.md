@@ -8,11 +8,12 @@
 
 > Part of the [Governed Agent Stack](https://github.com/Pawansingh3889/governed-agent-stack): free, on-prem building blocks for an AI agent you can point at a real database and audit.
 
-Read-only Model Context Protocol server for SQL databases. Lets LLMs (Claude, Cursor, ChatGPT, Continue) introspect and query **SQL Server, Postgres, and SQLite** with three layers of safety:
+Read-only Model Context Protocol server for SQL databases. Lets LLMs (Claude, Cursor, ChatGPT, Continue) introspect and query **SQL Server, Postgres, and SQLite** with a layered safety stack:
 
 1. **Connection-level read-only**: `pyodbc readonly=True`, Postgres `SET TRANSACTION READ ONLY`
 2. **AST validation**: sqlglot parses every query and rejects anything that isn't a `SELECT` (catches DML smuggled in CTEs)
 3. **Linter pass**: [sql-sop](https://pypi.org/project/sql-sop/) checks every query and rejects error-severity findings; warnings are surfaced to the LLM as advisory output
+4. **Role-based access (optional)**: [query-warden](https://github.com/Pawansingh3889/query-warden) blocks tables and columns outside the asker's role when a policy is configured
 
 Multi-server: configure several databases in one `servers.yaml`, the LLM picks which one to target per call.
 
@@ -25,7 +26,7 @@ Multi-server: configure several databases in one `servers.yaml`, the LLM picks w
 | `list_tables(server?, database?, schema?)` | List tables, optionally filtered by schema |
 | `describe_table(table, server?, schema?)` | Columns, types, nullability, defaults |
 | `get_table_sample(table, n=10, server?, schema?)` | Quick `SELECT TOP n / LIMIT n` |
-| `run_query(sql, server?)` | Execute arbitrary SELECT, three-layer safety stack |
+| `run_query(sql, server?)` | Execute arbitrary SELECT through the layered safety stack |
 | `explain_query(sql, server?)` | Return execution plan (engine-specific) |
 | `search_objects(query, server?)` | Find tables and columns by name fragment |
 
@@ -44,6 +45,20 @@ export SQL_EXPLORER_AUDIT_HASH=1                  # optional: store a hash of th
 ```
 
 Each row keeps the SQL, the server, the outcome (`ok`, `blocked` or `error`), row count and timing. If the variable isn't set, or agent-blackbox isn't installed, it does nothing. Read it back with `agent-blackbox verify`, `stats` or `export`.
+
+## Access control (optional)
+
+Restrict which tables and columns a role may query. The role check runs after the linter and before execution, so out-of-role access is blocked before it reaches the database.
+
+Off by default. Switch it on with [query-warden](https://github.com/Pawansingh3889/query-warden):
+
+```bash
+pip install "sql-explorer-mcp[rbac]"
+export SQL_EXPLORER_POLICY=/path/to/policy.yaml   # query-warden role policy
+export SQL_EXPLORER_ROLE=operator                 # the role to enforce
+```
+
+If the variable isn't set, or query-warden isn't installed, it does nothing. See [query-warden](https://github.com/Pawansingh3889/query-warden) for the policy format.
 
 ## Install
 

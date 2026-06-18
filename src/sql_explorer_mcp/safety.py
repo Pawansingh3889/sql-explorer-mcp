@@ -3,9 +3,11 @@
 Layer 1: connection-level read-only (handled in engines.py)
 Layer 2: sqlglot AST validation -- reject anything that isn't a single SELECT
 Layer 3: sql-sop linter -- reject queries with error-severity findings
+Layer 4: query-warden role check (optional) -- reject tables/columns outside
+         the asker's role; a no-op unless SQL_EXPLORER_POLICY is set
 
-Each call to validate_query() runs both layer 2 and layer 3 and returns a
-SafetyResult with passed=True only if both pass.
+Each call to validate_query() runs layers 2 to 4 and returns a SafetyResult
+with passed=True only if all configured layers pass.
 """
 
 from __future__ import annotations
@@ -14,6 +16,8 @@ from dataclasses import dataclass, field
 
 import sqlglot
 from sqlglot import expressions as sg_exp
+
+from .rbac import check_role
 
 
 SELECT_ROOT_TYPES = (sg_exp.Select, sg_exp.Union, sg_exp.With)
@@ -139,4 +143,12 @@ def validate_query(sql: str, dialect: str = "mssql") -> SafetyResult:
     if not layer2.passed:
         return layer2
     layer3 = lint_with_sql_sop(sql)
+    if not layer3.passed:
+        return layer3
+    allowed, reason = check_role(sql, dialect=dialect)
+    if not allowed:
+        return SafetyResult(
+            passed=False, layer="query-warden", reason=reason,
+            sqlsop_findings=layer3.sqlsop_findings,
+        )
     return layer3

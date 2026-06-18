@@ -60,6 +60,9 @@ dev = [
 audit = [
     "agent-blackbox>=0.1",       # tamper-evident audit log for run_query (set SQL_EXPLORER_AUDIT_DB)
 ]
+rbac = [
+    "query-warden>=0.1",         # role-based access control for run_query (set SQL_EXPLORER_POLICY)
+]
 
 [project.scripts]
 sql-explorer-mcp = "sql_explorer_mcp.server:main"

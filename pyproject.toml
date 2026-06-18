@@ -63,6 +63,9 @@ audit = [
 rbac = [
     "query-warden>=0.1",         # role-based access control for run_query (set SQL_EXPLORER_POLICY)
 ]
+mask = [
+    "pii-veil>=0.1",             # mask PII in run_query results (set SQL_EXPLORER_MASK=1)
+]
 
 [project.scripts]
 sql-explorer-mcp = "sql_explorer_mcp.server:main"

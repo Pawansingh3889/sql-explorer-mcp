@@ -35,6 +35,7 @@ from sql_explorer_mcp.introspection import (
 )
 from sql_explorer_mcp.safety import validate_query
 from sql_explorer_mcp.audit import record_query
+from sql_explorer_mcp.mask import mask_rows
 
 load_dotenv()
 
@@ -132,13 +133,17 @@ def run_query(
 ) -> dict:
     """Execute an arbitrary SELECT against a server.
 
-    Three-layer safety stack:
+    Layered safety stack:
       1. Connection is read-only (driver-enforced)
       2. sqlglot parses the SQL and rejects anything that isn't a SELECT
       3. sql-sop linter rejects queries with error-severity findings;
          warnings are returned alongside results as advisory output
+      4. query-warden role check (optional): blocks tables/columns outside the
+         asker's role when SQL_EXPLORER_POLICY is set
 
-    Result rows are capped at the server's max_rows (default 1000).
+    Result rows are capped at the server's max_rows (default 1000). When
+    SQL_EXPLORER_MASK=1 (with pii-veil installed), PII in the rows is masked
+    before they are returned.
 
     Returns: {passed: bool, rows: [...], rowcount: int, warnings: [...]}
     Failure: {passed: false, layer: 'select-only'|'sql-sop-error'|'parse', reason: str}
@@ -157,6 +162,7 @@ def run_query(
     start = time.perf_counter()
     try:
         rows = execute_select(s, sql)
+        rows = mask_rows(rows)
     except Exception as exc:
         record_query(sql, s.name, outcome="error", meta={"error": str(exc)[:200], "ms": round((time.perf_counter() - start) * 1000)})
         raise

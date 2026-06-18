@@ -60,6 +60,20 @@ export SQL_EXPLORER_ROLE=operator                 # the role to enforce
 
 If the variable isn't set, or query-warden isn't installed, it does nothing. See [query-warden](https://github.com/Pawansingh3889/query-warden) for the policy format.
 
+## Result masking (optional)
+
+Mask PII in the rows a query returns, before they go back to the model: the agent sees `<EMAIL_ADDRESS>` or `<PERSON>`, not the real values.
+
+Off by default. Switch it on with [pii-veil](https://github.com/Pawansingh3889/pii-veil):
+
+```bash
+pip install "sql-explorer-mcp[mask]"
+export SQL_EXPLORER_MASK=1                          # mask PII in result rows
+export SQL_EXPLORER_MASK_COLUMNS=customer,email     # optional: only these columns
+```
+
+pii-veil uses Microsoft Presidio when it's installed, with a regex fallback otherwise. If masking isn't enabled or pii-veil isn't installed, rows are returned unchanged.
+
 ## Install
 
 ```bash

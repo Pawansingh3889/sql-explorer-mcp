@@ -26,6 +26,7 @@ def sqlite_server(tmp_path: Path) -> ServerConfig:
     )
     # Seed a tiny schema using sqlite3 directly
     import sqlite3
+
     cn = sqlite3.connect(db_path)
     cn.executescript("""
         CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, active INTEGER);

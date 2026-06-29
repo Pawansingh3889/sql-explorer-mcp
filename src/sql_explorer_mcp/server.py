@@ -74,7 +74,11 @@ def list_servers() -> dict:
 
 
 @mcp.tool()
-def list_databases(server: str | None = Field(default=None, description="Server name from servers.yaml; omit for default")) -> list[dict]:
+def list_databases(
+    server: str | None = Field(
+        default=None, description="Server name from servers.yaml; omit for default"
+    ),
+) -> list[dict]:
     """List databases visible on a given server (mssql/postgres only -- sqlite returns the single attached file)."""
     cfg = _get_config()
     s = cfg.get_server(server)
@@ -85,8 +89,12 @@ def list_databases(server: str | None = Field(default=None, description="Server 
 @mcp.tool()
 def list_tables(
     server: str | None = Field(default=None),
-    database: str | None = Field(default=None, description="(mssql/postgres) override the database in the connection"),
-    schema: str | None = Field(default=None, description="Filter by schema (e.g. 'dbo' for mssql, 'public' for postgres)"),
+    database: str | None = Field(
+        default=None, description="(mssql/postgres) override the database in the connection"
+    ),
+    schema: str | None = Field(
+        default=None, description="Filter by schema (e.g. 'dbo' for mssql, 'public' for postgres)"
+    ),
 ) -> list[dict]:
     """List tables on a server, optionally filtered by schema."""
     cfg = _get_config()
@@ -94,6 +102,7 @@ def list_tables(
     # If a database is given and differs from server.database, swap it in
     if database and database != s.database:
         from dataclasses import replace
+
         s = replace(s, database=database)
     sql, params = list_tables_sql(s.dialect, schema)
     return execute_select(s, sql, params)
@@ -152,7 +161,9 @@ def run_query(
     s = cfg.get_server(server)
     safety = validate_query(sql, dialect=s.dialect)
     if not safety.passed:
-        record_query(sql, s.name, outcome="blocked", meta={"layer": safety.layer, "reason": safety.reason})
+        record_query(
+            sql, s.name, outcome="blocked", meta={"layer": safety.layer, "reason": safety.reason}
+        )
         return {
             "passed": False,
             "layer": safety.layer,
@@ -164,9 +175,19 @@ def run_query(
         rows = execute_select(s, sql)
         rows = mask_rows(rows)
     except Exception as exc:
-        record_query(sql, s.name, outcome="error", meta={"error": str(exc)[:200], "ms": round((time.perf_counter() - start) * 1000)})
+        record_query(
+            sql,
+            s.name,
+            outcome="error",
+            meta={"error": str(exc)[:200], "ms": round((time.perf_counter() - start) * 1000)},
+        )
         raise
-    record_query(sql, s.name, outcome="ok", meta={"rows": len(rows), "ms": round((time.perf_counter() - start) * 1000)})
+    record_query(
+        sql,
+        s.name,
+        outcome="ok",
+        meta={"rows": len(rows), "ms": round((time.perf_counter() - start) * 1000)},
+    )
     return {
         "passed": True,
         "rows": rows,

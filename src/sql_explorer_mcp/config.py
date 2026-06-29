@@ -88,9 +88,7 @@ class Config:
     def get_server(self, name: str | None) -> ServerConfig:
         key = name or self.default_server
         if key not in self.servers:
-            raise ConfigError(
-                f"Unknown server {key!r}. Configured servers: {sorted(self.servers)}"
-            )
+            raise ConfigError(f"Unknown server {key!r}. Configured servers: {sorted(self.servers)}")
         return self.servers[key]
 
 
@@ -99,11 +97,13 @@ def _candidate_paths() -> list[Path]:
     env = os.environ.get("SQL_EXPLORER_CONFIG")
     if env:
         paths.append(Path(env))
-    paths.extend([
-        Path("servers.yaml"),
-        Path("servers.yml"),
-        Path.home() / ".sql-explorer-mcp" / "servers.yaml",
-    ])
+    paths.extend(
+        [
+            Path("servers.yaml"),
+            Path("servers.yml"),
+            Path.home() / ".sql-explorer-mcp" / "servers.yaml",
+        ]
+    )
     return paths
 
 
@@ -165,8 +165,6 @@ def _parse(path: Path) -> Config:
         default_server = next(iter(servers))
 
     if default_server not in servers:
-        raise ConfigError(
-            f"{path}: default_server={default_server!r} is not in servers list"
-        )
+        raise ConfigError(f"{path}: default_server={default_server!r} is not in servers list")
 
     return Config(default_server=default_server, servers=servers)

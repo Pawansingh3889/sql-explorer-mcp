@@ -56,7 +56,7 @@ def validate_select_only(sql: str, dialect: str = "tsql") -> SafetyResult:
             passed=False,
             layer="select-only",
             reason=f"Multiple statements not allowed ({len(statements)} found). "
-                   f"Submit one SELECT at a time.",
+            f"Submit one SELECT at a time.",
         )
 
     stmt = statements[0]
@@ -131,7 +131,7 @@ def lint_with_sql_sop(sql: str) -> SafetyResult:
             passed=False,
             layer="sql-sop-error",
             reason=f"sql-sop found {len(errors)} error-severity issue(s): "
-                   + "; ".join(f"{e['rule_id']} {e['message']}" for e in errors[:3]),
+            + "; ".join(f"{e['rule_id']} {e['message']}" for e in errors[:3]),
             sqlsop_findings=findings,
         )
     return SafetyResult(passed=True, sqlsop_findings=findings)
@@ -148,7 +148,9 @@ def validate_query(sql: str, dialect: str = "mssql") -> SafetyResult:
     allowed, reason = check_role(sql, dialect=dialect)
     if not allowed:
         return SafetyResult(
-            passed=False, layer="query-warden", reason=reason,
+            passed=False,
+            layer="query-warden",
+            reason=reason,
             sqlsop_findings=layer3.sqlsop_findings,
         )
     return layer3

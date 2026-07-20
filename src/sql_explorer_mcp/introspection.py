@@ -13,8 +13,9 @@ def list_databases_sql(dialect: str) -> str:
     if dialect == "mssql":
         return "SELECT name FROM sys.databases WHERE state = 0 ORDER BY name"
     if dialect == "postgres":
-        return ("SELECT datname AS name FROM pg_database "
-                "WHERE datistemplate = false ORDER BY datname")
+        return (
+            "SELECT datname AS name FROM pg_database WHERE datistemplate = false ORDER BY datname"
+        )
     if dialect == "sqlite":
         return "SELECT name FROM pragma_database_list()"
     raise ValueError(f"Unknown dialect: {dialect}")
@@ -110,7 +111,7 @@ def get_table_sample_sql(dialect: str, table: str, schema: str | None, n: int) -
     if dialect == "postgres":
         parts = fq_table.split(".")
         fq_quoted = ".".join(f'"{p}"' for p in parts)
-        return f'SELECT * FROM {fq_quoted} LIMIT {n}', {}
+        return f"SELECT * FROM {fq_quoted} LIMIT {n}", {}
     if dialect == "sqlite":
         # SQLite has no schemas in the same sense
         if not table.replace("_", "").replace("-", "").isalnum():

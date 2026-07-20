@@ -75,7 +75,9 @@ def get_engine(server: ServerConfig) -> Engine:
     return _build_engine(server.name, dsn)
 
 
-def execute_select(server: ServerConfig, sql: str, params: dict[str, Any] | None = None) -> list[dict]:
+def execute_select(
+    server: ServerConfig, sql: str, params: dict[str, Any] | None = None
+) -> list[dict]:
     """Execute a SELECT and return rows as list of dicts. Capped at server.max_rows."""
     eng = get_engine(server)
     with eng.connect() as cn:

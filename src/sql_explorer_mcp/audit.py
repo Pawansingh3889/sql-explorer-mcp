@@ -11,6 +11,7 @@ break a query.
 
 Install with: pip install "sql-explorer-mcp[audit]"
 """
+
 from __future__ import annotations
 
 import os

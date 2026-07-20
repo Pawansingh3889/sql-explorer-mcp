@@ -8,6 +8,7 @@ this is a no-op that allows everything, so it never breaks an unconfigured serve
 
 Install with: pip install "sql-explorer-mcp[rbac]"
 """
+
 from __future__ import annotations
 
 import os

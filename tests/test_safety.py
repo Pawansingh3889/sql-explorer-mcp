@@ -26,15 +26,12 @@ class TestSelectOnly:
 
     def test_cte_with_select_passes(self):
         r = validate_select_only(
-            "WITH active AS (SELECT id FROM users WHERE active = 1) "
-            "SELECT * FROM active"
+            "WITH active AS (SELECT id FROM users WHERE active = 1) SELECT * FROM active"
         )
         assert r.passed
 
     def test_union_passes(self):
-        r = validate_select_only(
-            "SELECT id FROM users UNION ALL SELECT id FROM customers"
-        )
+        r = validate_select_only("SELECT id FROM users UNION ALL SELECT id FROM customers")
         assert r.passed
 
     def test_insert_rejected(self):

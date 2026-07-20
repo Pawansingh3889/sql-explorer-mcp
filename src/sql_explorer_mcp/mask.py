@@ -7,6 +7,7 @@ installed or masking isn't enabled, this is a no-op that returns rows unchanged.
 
 Install with: pip install "sql-explorer-mcp[mask]"
 """
+
 from __future__ import annotations
 
 import os

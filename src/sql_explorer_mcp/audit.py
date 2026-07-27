@@ -15,7 +15,6 @@ Install with: pip install "sql-explorer-mcp[audit]"
 from __future__ import annotations
 
 import os
-from typing import Optional
 
 _ledger = None
 _resolved = False
@@ -46,7 +45,7 @@ def _get_ledger():
     return _ledger
 
 
-def record_query(sql: str, server: str, outcome: str, meta: Optional[dict] = None) -> None:
+def record_query(sql: str, server: str, outcome: str, meta: dict | None = None) -> None:
     """Record one run_query call, if auditing is enabled. Never raises."""
     led = _get_ledger()
     if led is None:

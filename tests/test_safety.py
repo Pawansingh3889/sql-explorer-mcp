@@ -6,13 +6,11 @@ This file covers layers 2 (sqlglot SELECT-only) and 3 (sql-sop linter).
 
 from __future__ import annotations
 
-
 from sql_explorer_mcp.safety import (
     lint_with_sql_sop,
     validate_query,
     validate_select_only,
 )
-
 
 # ---------------------------------------------------------------------------
 # Layer 2: SELECT-only validation

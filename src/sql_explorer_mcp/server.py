@@ -23,6 +23,7 @@ from fastmcp import FastMCP
 from pydantic import Field
 
 from sql_explorer_mcp import __version__
+from sql_explorer_mcp.audit import record_query
 from sql_explorer_mcp.config import load_config
 from sql_explorer_mcp.engines import execute_select
 from sql_explorer_mcp.introspection import (
@@ -33,9 +34,8 @@ from sql_explorer_mcp.introspection import (
     list_tables_sql,
     search_objects_sql,
 )
-from sql_explorer_mcp.safety import validate_query
-from sql_explorer_mcp.audit import record_query
 from sql_explorer_mcp.mask import mask_rows
+from sql_explorer_mcp.safety import validate_query
 
 load_dotenv()
 

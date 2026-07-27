@@ -19,7 +19,6 @@ from sqlglot import expressions as sg_exp
 
 from .rbac import check_role
 
-
 SELECT_ROOT_TYPES = (sg_exp.Select, sg_exp.Union, sg_exp.With)
 
 

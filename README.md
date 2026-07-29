@@ -1,3 +1,12 @@
+> [!IMPORTANT]
+> **This repository has moved into the [Governed Agent Stack](https://github.com/Pawansingh3889/governed-agent-stack) monorepo.**
+>
+> Active development is now at [`packages/sql-explorer-mcp/`](https://github.com/Pawansingh3889/governed-agent-stack/tree/main/packages/sql-explorer-mcp).
+> This repo is archived and read-only. Its full commit history is preserved here;
+> new work, issues and releases happen in the monorepo.
+
+---
+
 # sql-explorer-mcp
 
 [![PyPI](https://img.shields.io/pypi/v/sql-explorer-mcp)](https://pypi.org/project/sql-explorer-mcp/) [![Downloads](https://static.pepy.tech/badge/sql-explorer-mcp)](https://pepy.tech/projects/sql-explorer-mcp)
